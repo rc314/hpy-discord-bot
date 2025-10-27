@@ -65,13 +65,17 @@ python main.py
 ```
 discord-science-bot/
 ├─ main.py
-├─ help.py
-├─ chemistry.py
-├─ physics.py
-├─ math.py
-├─ safe_sympy.py
 ├─ requirements.txt
-└─ .gitignore
+├─ .gitignore
+│
+├─ cogs/
+│  ├─ help.py
+│  ├─ chemistry.py
+│  ├─ physics.py
+│  └─ math.py
+│
+└─ utils/
+   └─ safe_sympy.py
 ```
 
 ---
