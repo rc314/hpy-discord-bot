@@ -3,3 +3,4 @@ python-dotenv==1.0.1
 sympy==1.13.2
 periodictable==1.7.1
 pint==0.24.4
+asyncio

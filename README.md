@@ -1,100 +1,154 @@
-# hpy discord bot ⚙️
+# HPY Science Bot
 
-A multi-purpose educational Discord bot for **Math**, **Physics**, and **Chemistry**, built with Python and Discord.py.  
-It evaluates equations, solves differential equations, converts units, and balances chemical reactions.
+HPY Science Bot is a multi-purpose educational Discord bot focused on Math, Physics, and Chemistry.
+It provides quick, interactive tooling for symbolic math, unit conversions, simple physics utilities,
+and chemical equation balancing.
 
----
+Disclaimer: This bot is for educational use only and does not guarantee fully correct answers.
+Always verify results with reliable sources, especially for coursework, exams, laboratory work, or professional use.
 
-## 🚀 Features
+## Core capabilities
 
-- **Math**  
-  - Evaluate or simplify expressions  
-  - Compute derivatives, integrals, limits, and series  
-  - Solve algebraic and differential equations (1st and 2nd order)
+### Math
+Math commands are intended for symbolic and algebraic computation. Typical use cases:
+- Simplifying expressions
+- Solving equations
+- Differentiation and integration
+- Limits and series expansions
+- Solving ordinary differential equations (ODEs)
 
-- **Physics**  
-  - Access common constants (c, h, k_B, etc.)  
-  - Convert units with autocomplete  
-  - Apply Ohm’s law and kinematic formulas
+### Physics
+Physics commands focus on practical utilities:
+- Physical constants lookup
+- Unit conversion with autocomplete
+- Simple helpers such as Ohm’s law and basic kinematics workflows (if present in your physics cog)
 
-- **Chemistry**  
-  - Automatically balance chemical equations using linear algebra
+### Chemistry
+Chemistry commands focus on balancing chemical equations:
+- Balances equations by conserving each element using a linear algebra approach
+- Outputs the smallest whole-number coefficients when possible
 
-- **Help Menu**  
-  - `/help guide` shows examples and quick buttons to learn commands
+## Help system
 
----
+The bot provides an interactive help menu via:
 
-## 🧰 Installation
+- /help
 
-```bash
-# Clone the repository
-git clone https://github.com/YOUR_USERNAME/discord-science-bot.git
-cd discord-science-bot
+This command displays an embed explaining the bot’s purpose and usage. It includes topic buttons
+(Math, Physics, Chemistry). Clicking a topic button switches the embed to a detailed guide for that topic,
+including command lists and usage examples.
 
-# Create a virtual environment
-python -m venv venv
-source venv/bin/activate     # on Linux / macOS
-venv\Scripts\activate        # on Windows
+The help pages also include the educational disclaimer.
 
-# Install dependencies
-pip install -r requirements.txt
-```
+## Command registration and removing old commands
 
----
+Discord slash commands are registered on Discord’s side. When you rename or remove commands in code,
+Discord may continue showing older commands until you re-sync.
 
-## ⚙️ Usage
+This project supports two sync modes:
 
-1. Create a Discord bot via the [Discord Developer Portal](https://discord.com/developers/applications).  
-2. Copy your bot token and save it in a `.env` file or a secure config file.
-3. Run the bot:
+1) Development guild sync (recommended for testing)
+   - Syncs commands to a single test server quickly.
+   - Typically updates appear almost immediately in that server.
 
-```bash
-python main.py
-```
+2) Optional global sync (use only when you need it)
+   - Global commands can take longer to propagate/update.
+   - Use global sync when you need to remove or update old global commands that still appear.
 
-4. Use slash commands like:
-   - `/math calc expr:(2+3)^3`
-   - `/phys convert value:10 src_unit:m/s dst_unit:km/h`
-   - `/chem balance equation:"Fe + O2 = Fe2O3"`
+Environment variable:
+- SYNC_GLOBAL_ON_START
+  - If set to 1/true, the bot will sync global commands at startup.
+  - Keep this off during normal development; turn it on temporarily when you need to update global commands.
 
----
+## Presence (status text)
 
-## 🧩 Project Structure
+The bot’s presence text is configurable via:
+- PRESENCE_TEXT
 
-```
+Example:
+- PRESENCE_TEXT=try /help
+
+This is applied when the bot becomes ready.
+
+## Requirements
+
+- Python 3.10 or newer
+- discord.py
+- sympy (for math)
+- pint (for units)
+- python-dotenv (for environment configuration)
+
+Install dependencies:
+- pip install -r requirements.txt
+
+## Installation
+
+1) Clone the repository
+   - git clone <your-repo-url>
+   - cd <your-repo-folder>
+
+2) Create and activate a virtual environment
+   - python -m venv venv
+   - Windows:
+     - venv\Scripts\activate
+   - Linux/macOS:
+     - source venv/bin/activate
+
+3) Install requirements
+   - pip install -r requirements.txt
+
+## Configuration
+
+Create a .env file in the project root:
+
+TOKEN=YOUR_DISCORD_BOT_TOKEN
+DEV_GUILD_ID=YOUR_TEST_GUILD_ID
+SYNC_GLOBAL_ON_START=0
+PRESENCE_TEXT=try /help
+
+Notes:
+- TOKEN is your bot token from the Discord Developer Portal.
+- DEV_GUILD_ID is the server (guild) ID where you want fast command syncing during development.
+- Keep SYNC_GLOBAL_ON_START disabled (0) unless you explicitly need to refresh global commands.
+
+## Running the bot
+
+- python main.py
+
+Once the bot is online:
+- Use /help to open the interactive guide.
+
+## Project structure
+
 discord-science-bot/
-├─ main.py
-├─ requirements.txt
-├─ .gitignore
-│
-├─ cogs/
-│  ├─ help.py
-│  ├─ chemistry.py
-│  ├─ physics.py
-│  └─ math.py
-│
-└─ utils/
-   └─ safe_sympy.py
-```
+  main.py
+  requirements.txt
+  .env
+  cogs/
+    help.py
+    math.py
+    physics.py
+    chemistry.py
+  utils/
+    (optional helpers)
 
----
+## Troubleshooting
 
-## 🧠 Requirements
+1) Old commands still show in Discord
+- Ensure DEV_GUILD_ID is set correctly.
+- Restart the bot so it re-syncs the dev guild commands.
+- If old commands are global, temporarily set SYNC_GLOBAL_ON_START=1, restart once, then set it back to 0.
 
-- Python 3.10+
-- `discord.py`
-- `sympy`
-- `pint`
+2) Commands do not appear in the guild
+- Confirm the bot was invited with the applications.commands scope.
+- Confirm the bot has permission to use slash commands in that server.
+- Confirm your cogs load successfully (check logs).
 
-Install everything with:
-```bash
-pip install discord.py sympy pint
-```
+3) Math parsing issues
+- Wrap expressions containing spaces in quotes.
+- Prefer x as the main variable for algebra/calc expressions.
+- Use y only when working with ODEs if your math implementation reserves y for that purpose.
 
----
+## License
 
-## 💡 License
-
-MIT License © 2025  
-You are free to modify and distribute this project for educational or personal use.
+MIT License.
